@@ -1,174 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>物流管理系统</title>
-    <!-- jq -->
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-    <!-- layer -->
-    <script src="{{ url_for('static', filename='layer/layer.js') }}"></script>
+{% block style %}
+<style type="text/css">
+    .hidden.menu {
+        display: none;
+    }
 
-    <!-- semantic-ui -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Semantic-UI/components/reset.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Semantic-UI/components/site.css') }}">
+    .masthead.segment {
+        min-height: 750px;
+        padding: 1em 0em;
+    }
 
-    <link rel="stylesheet" type="text/css"
-        href="{{ url_for('static', filename='Semantic-UI/components/container.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Semantic-UI/components/grid.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Semantic-UI/components/header.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Semantic-UI/components/image.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Semantic-UI/components/menu.css') }}">
+    .masthead .logo.item img {
+        margin-right: 1em;
+    }
 
-    <link rel="stylesheet" type="text/css"
-        href="{{ url_for('static', filename='Semantic-UI/components/divider.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ url_for('static', filename='Semantic-UI/components/dropdown.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ url_for('static', filename='Semantic-UI/components/segment.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Semantic-UI/components/button.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Semantic-UI/components/list.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Semantic-UI/components/icon.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ url_for('static', filename='Semantic-UI/components/sidebar.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ url_for('static', filename='Semantic-UI/components/transition.css') }}">
+    .masthead .ui.menu .ui.button {
+        margin-left: 0.5em;
+    }
 
-    <style type="text/css">
-        .hidden.menu {
+    .masthead h1.ui.header {
+        margin-top: 3em;
+        margin-bottom: 0em;
+        font-size: 4em;
+        font-weight: normal;
+    }
+
+    .masthead h2 {
+        font-size: 1.7em;
+        font-weight: normal;
+    }
+
+    .ui.vertical.stripe {
+        padding: 8em 0em;
+    }
+
+    .ui.vertical.stripe h3 {
+        font-size: 2em;
+    }
+
+    .ui.vertical.stripe .button+h3,
+    .ui.vertical.stripe p+h3 {
+        margin-top: 3em;
+    }
+
+    .ui.vertical.stripe .floated.image {
+        clear: both;
+    }
+
+    .ui.vertical.stripe p {
+        font-size: 1.33em;
+    }
+
+    .ui.vertical.stripe .horizontal.divider {
+        margin: 3em 0em;
+    }
+
+    .quote.stripe.segment {
+        padding: 0em;
+    }
+
+    .quote.stripe.segment .grid .column {
+        padding-top: 5em;
+        padding-bottom: 5em;
+    }
+
+    .footer.segment {
+        padding: 5em 0em;
+    }
+
+    .secondary.pointing.menu .toc.item {
+        display: none;
+    }
+
+    @media only screen and (max-width: 700px) {
+        .ui.fixed.menu {
+            display: none !important;
+        }
+
+        .secondary.pointing.menu .item,
+        .secondary.pointing.menu .menu {
             display: none;
-        }
-
-        .masthead.segment {
-            min-height: 750px;
-            padding: 1em 0em;
-        }
-
-        .masthead .logo.item img {
-            margin-right: 1em;
-        }
-
-        .masthead .ui.menu .ui.button {
-            margin-left: 0.5em;
-        }
-
-        .masthead h1.ui.header {
-            margin-top: 3em;
-            margin-bottom: 0em;
-            font-size: 4em;
-            font-weight: normal;
-        }
-
-        .masthead h2 {
-            font-size: 1.7em;
-            font-weight: normal;
-        }
-
-        .ui.vertical.stripe {
-            padding: 8em 0em;
-        }
-
-        .ui.vertical.stripe h3 {
-            font-size: 2em;
-        }
-
-        .ui.vertical.stripe .button+h3,
-        .ui.vertical.stripe p+h3 {
-            margin-top: 3em;
-        }
-
-        .ui.vertical.stripe .floated.image {
-            clear: both;
-        }
-
-        .ui.vertical.stripe p {
-            font-size: 1.33em;
-        }
-
-        .ui.vertical.stripe .horizontal.divider {
-            margin: 3em 0em;
-        }
-
-        .quote.stripe.segment {
-            padding: 0em;
-        }
-
-        .quote.stripe.segment .grid .column {
-            padding-top: 5em;
-            padding-bottom: 5em;
-        }
-
-        .footer.segment {
-            padding: 5em 0em;
         }
 
         .secondary.pointing.menu .toc.item {
-            display: none;
+            display: block;
         }
 
-        @media only screen and (max-width: 700px) {
-            .ui.fixed.menu {
-                display: none !important;
-            }
-
-            .secondary.pointing.menu .item,
-            .secondary.pointing.menu .menu {
-                display: none;
-            }
-
-            .secondary.pointing.menu .toc.item {
-                display: block;
-            }
-
-            .masthead.segment {
-                min-height: 350px;
-            }
-
-            .masthead h1.ui.header {
-                font-size: 2em;
-                margin-top: 1.5em;
-            }
-
-            .masthead h2 {
-                margin-top: 0.5em;
-                font-size: 1.5em;
-            }
+        .masthead.segment {
+            min-height: 350px;
         }
-    </style>
-    
-    <script src="{{ url_for('static', filename='Semantic-UI/components/visibility.js') }}"></script>
-    <script src="{{ url_for('static', filename='Semantic-UI/components/sidebar.js') }}"></script>
-    <script src="{{ url_for('static', filename='Semantic-UI/components/transition.js') }}"></script>
-    <script>
-        $(document)
-            .ready(function () {
 
-                // fix menu when passed
-                $('.masthead')
-                    .visibility({
-                        once: false,
-                        onBottomPassed: function () {
-                            $('.fixed.menu').transition('fade in');
-                        },
-                        onBottomPassedReverse: function () {
-                            $('.fixed.menu').transition('fade out');
-                        }
-                    });
+        .masthead h1.ui.header {
+            font-size: 2em;
+            margin-top: 1.5em;
+        }
 
-                // create sidebar and attach to menu open
-                $('.ui.sidebar')
-                    .sidebar('attach events', '.toc.item');
+        .masthead h2 {
+            margin-top: 0.5em;
+            font-size: 1.5em;
+        }
+    }
+</style>
+{% endblock %}
 
-            });
-    </script>
-</head>
 
-<body class="pushable">
+{% block main %}
 
     <!-- Following Menu -->
-    <div class="ui large top fixed menu transition hidden">
+    <!-- <div class="ui large top fixed menu transition hidden">
         <div class="ui container">
             <a class="active item">主页</a>
             <a class="item">工作</a>
@@ -183,22 +123,22 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Sidebar Menu -->
-    <div class="ui vertical inverted sidebar menu left">
+    <!-- <div class="ui vertical inverted sidebar menu left">
         <a class="active item">主页</a>
         <a class="item">工作</a>
         <a class="item">公司</a>
         <a class="item">职业</a>
         <a class="item user-login">登录</a>
         <a class="item user-register">注册</a>
-    </div>
+    </div> -->
 
 
     <!-- Page Contents -->
     <div class="pusher">
-        <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui inverted vertical masthead center aligned segment home-container">
 
             <div class="ui container">
                 <div class="ui large secondary inverted pointing menu">
@@ -226,7 +166,7 @@
 
         </div>
 
-        <div class="ui vertical stripe segment">
+        <!-- <div class="ui vertical stripe segment">
             <div class="ui middle aligned stackable grid container">
                 <div class="row">
                     <div class="eight wide column">
@@ -284,10 +224,10 @@
                 </p>
                 <a class="ui large button">I'm Still Quite Interested</a>
             </div>
-        </div>
+        </div> -->
 
 
-        <div class="ui inverted vertical footer segment">
+        <!-- <div class="ui inverted vertical footer segment">
             <div class="ui container">
                 <div class="ui stackable inverted divided equal height stackable grid">
                     <div class="three wide column">
@@ -305,11 +245,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
-</body>
+{% endblock %}
 
+
+{% block script %}
 <script>
     $(".user-login").click(()=>{
         layer.msg("登录!")
@@ -323,7 +265,6 @@
 
 </script>
 
-
 <script>
     $(document).ready(function(){
         layer.msg("Hi, 你tmlgbd想拉货还是发货?")
@@ -331,4 +272,4 @@
     
 </script>
 
-</html>
+{% endblock %}

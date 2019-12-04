@@ -1,0 +1,48 @@
+Source path:... C:\Users\Administrator\Desktop\TransportManage\Transport\app\__init__.py
+20:08:47.039642 call        24 def login():
+20:08:47.041643 line        25     if(request.method == "POST"):
+20:08:47.042650 line        49     return render_template("login.html")
+20:08:47.097641 return      49     return render_template("login.html")
+Return value:.. '<!DOCTYPE html>\n<html lang="en">\n\n<head>\n  ...\n            })\n        </script>\n\n\n</html>'
+20:08:47.371949 call        24 def login():
+20:08:47.387946 line        25     if(request.method == "POST"):
+20:08:47.387946 line        49     return render_template("login.html")
+20:08:47.390973 return      49     return render_template("login.html")
+Return value:.. '<!DOCTYPE html>\n<html lang="en">\n\n<head>\n  ...\n            })\n        </script>\n\n\n</html>'
+20:08:47.534944 call        24 def login():
+20:08:47.535944 line        25     if(request.method == "POST"):
+20:08:47.536943 line        49     return render_template("login.html")
+20:08:47.538941 return      49     return render_template("login.html")
+Return value:.. '<!DOCTYPE html>\n<html lang="en">\n\n<head>\n  ...\n            })\n        </script>\n\n\n</html>'
+20:08:47.702944 call        24 def login():
+20:08:47.703946 line        25     if(request.method == "POST"):
+20:08:47.703946 line        49     return render_template("login.html")
+20:08:47.706943 return      49     return render_template("login.html")
+Return value:.. '<!DOCTYPE html>\n<html lang="en">\n\n<head>\n  ...\n            })\n        </script>\n\n\n</html>'
+20:08:47.870944 call        24 def login():
+20:08:47.871945 line        25     if(request.method == "POST"):
+20:08:47.871945 line        49     return render_template("login.html")
+20:08:47.875957 return      49     return render_template("login.html")
+Return value:.. '<!DOCTYPE html>\n<html lang="en">\n\n<head>\n  ...\n            })\n        </script>\n\n\n</html>'
+20:08:53.350002 call        24 def login():
+20:08:53.351033 line        25     if(request.method == "POST"):
+20:08:53.351033 line        27             "code": "200"
+20:08:53.352034 line        28             ,"msg": "登录成功!"
+20:08:53.352034 line        29             ,"url": "/index/"
+New var:....... data = {'code': '200', 'msg': '登录成功!', 'url': '/index/'}
+20:08:53.353047 line        32         phone = request.form.get("phone")
+New var:....... phone = '123'
+20:08:53.356036 line        33         password = request.form.get("password")
+New var:....... password = 'asd'
+20:08:53.360037 line        35         user = Driver.query.filter_by(phone_number = phone).first() 
+New var:....... user = None
+20:08:53.725922 line        36         if user is None:
+20:08:53.726999 line        37             user = Consigner.query.filter_by(phone_number = phone).first()
+20:08:53.748232 line        39         islogin = False
+New var:....... islogin = False
+20:08:53.749228 line        40         if user and user.check_password(password):
+20:08:53.750228 line        47             data["msg"] = "登录失败"
+Modified var:.. data = {'code': '200', 'msg': '登录失败', 'url': '/index/'}
+20:08:53.751229 line        48         return jsonify(data)
+20:08:53.752228 return      48         return jsonify(data)
+Return value:.. <Response 79 bytes [200 OK]>

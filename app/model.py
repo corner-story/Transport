@@ -1,7 +1,7 @@
 """ 
     数据实体
 """
-from app.extenstions import db
+from app.extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
@@ -18,6 +18,7 @@ class Driver(db.Model):
     transport_type = db.Column(db.String(255))
     account = db.Column(db.String(255))
     user_type = db.Column(db.String(32), default="Driver")
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     # 一个司机可以有多个申请
     applications = db.relationship("Application", backref="driver")
@@ -33,7 +34,7 @@ class Driver(db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return f"<Driver: {username}, {phone_number}>"
+        return f"<Driver: {self.username}, {self.phone_number}>"
 
 
 # 货主方包括：姓名、联系方式、常用货物、住址等
@@ -47,6 +48,7 @@ class Consigner(db.Model):
     address = db.Column(db.String(320))
     account = db.Column(db.String(255))
     user_type = db.Column(db.String(32), default="Consigner")
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     # 发货人和货物一对多
     goods = db.relationship("Good", backref="consigner")
@@ -63,9 +65,10 @@ class Consigner(db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return f"<Consigner: {username}, {phone_number}>"
+        return f"<Consigner: {self.username}, {self.phone_number}>"
 
 
+# 货物
 class Good(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement = True)
     good_name = db.Column(db.String(255), nullable = False, index=True)
@@ -83,12 +86,13 @@ class Good(db.Model):
     applications = db.relationship("Application", backref="good")
 
     def __repr__(self):
-        return f"<Good: {good_name}, {good_status}>"
+        return f"<Good: {self.good_name}, {self.good_status}>"
 
-
+# 拉货申请
 class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement = True)
-    result = db.Column(db.String(120), default="等待审核")
+    result = db.Column(db.String(120), default="等待审核", index=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     # 一个司机可以有多个申请
     driver_id = db.Column(db.Integer, db.ForeignKey("driver.id"))
@@ -97,4 +101,4 @@ class Application(db.Model):
     good_id = db.Column(db.Integer, db.ForeignKey("good.id"))
 
     def __repr__(self):
-        return f"<Application: {id}, {result}>"
+        return f"<Application: {self.id}, {self.result}>"

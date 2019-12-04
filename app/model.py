@@ -18,6 +18,7 @@ class Driver(db.Model):
     transport_type = db.Column(db.String(255))
     account = db.Column(db.String(255))
     user_type = db.Column(db.String(32), default="Driver")
+    backup = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     # 一个司机可以有多个申请
@@ -48,6 +49,7 @@ class Consigner(db.Model):
     address = db.Column(db.String(320))
     account = db.Column(db.String(255))
     user_type = db.Column(db.String(32), default="Consigner")
+    backup = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     # 发货人和货物一对多
@@ -77,6 +79,7 @@ class Good(db.Model):
     transport_des = db.Column(db.String(255), nullable= False, index=True)
     transport_money = db.Column(db.String(255))
     good_status = db.Column(db.String(120), default="等待司机承运")
+    backup = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     # 发货人和货物是一对多
@@ -92,6 +95,7 @@ class Good(db.Model):
 class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement = True)
     result = db.Column(db.String(120), default="等待审核", index=True)
+    backup = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     # 一个司机可以有多个申请

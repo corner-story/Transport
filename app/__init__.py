@@ -19,16 +19,14 @@ migrate.init_app(app=app, db=db)
 def index():
     return render_template("index.html")
 
+
 @app.route("/login/", methods=["GET", "POST"])
 @pysnooper.snoop(output=f"{logdir}/login.log")
 def login():
+    if request.method == "GET":
+        return render_template("login.html")
+
     if(request.method == "POST"):
-        data = {
-            "code": "200"
-            ,"msg": "登录成功!"
-            ,"url": "/index/"
-        }
-        
         phone = request.form.get("phone")
         password = request.form.get("password")
 
@@ -36,18 +34,23 @@ def login():
         if user is None:
             user = Consigner.query.filter_by(phone_number = phone).first()
 
-        islogin = False
+        data = {
+            "code": "200"
+            ,"msg": ""
+            ,"url": "#"
+        }
         if user and user.check_password(password):
-            islogin = True
-            session["islogin"] = islogin
+            # 登录成功
+            session["islogin"] = True
             session["role"] = user.user_type
             session["username"] = user.username
-            data["msg"] = f"登陆成功, 你的角色为{session['role']}!"
+            
+            data["msg"] = "登录成功!"
+            data["url"] = "/index/"
         else:
-            data["msg"] = "登录失败"
+            data["msg"] = "登录失败, 请检查手机号和密码是否正确!"
         return jsonify(data)
-    return render_template("login.html")
-
+    
 
 @app.route("/register/")
 def register():

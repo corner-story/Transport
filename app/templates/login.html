@@ -35,7 +35,7 @@
                 <div class="field">
                   <div class="ui left icon input">
                     <i class="user icon"></i>
-                    <input type="text" name="text" placeholder="请输入手机号码" id="login-phone">
+                    <input type="text" name="phone" placeholder="请输入手机号码" id="login-phone">
                   </div>
                 </div>
                 <div class="field">
@@ -75,6 +75,10 @@
                     ,data: data
                     ,success: function(res){
                         layer.msg(res.msg)
+                        if(res.url !== "#"){
+                          parent.location.href = res.url
+                        }
+                        return true;
                     } 
                     ,error: function(first, second, third){
                         console.log(first)

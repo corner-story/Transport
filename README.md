@@ -1,2 +1,2 @@
 # Transport-Management
-physical distribution manage system designed by python and flask
+physical distribution manage system designed by vue and flask

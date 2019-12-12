@@ -31,7 +31,8 @@ const routes = [{
 	{
 		path: "/home",
 		name: "home",
-		component: () => import("../views/Home.vue")
+		component: () => import("../views/Home.vue"),
+		
 	}
 ]
 
@@ -44,10 +45,15 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
 	// 查看是否有login_required这个属性
 	if ("login_required" in to.meta) {
-		next()
+		if(window.$cookies.isKey("islogin")){
+			next({path: "/home"})
+		}else{
+			next()
+		}
 	} else {
 		// 查看用户是否登录(根据cookie)
 		if (window.$cookies.isKey("islogin")) {
+			console.log({cookies: window.$cookies})
 			next()
 		} else {
 			next({

@@ -1,5 +1,5 @@
 <template>
-<v-app id="inspire">
+<v-app>
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
         <v-list dense>
             <template v-for="item in items">
@@ -48,62 +48,74 @@
         </v-list>
     </v-navigation-drawer>
 
+    <!-- 导航栏 -->
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-        <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
+
+        <v-toolbar-title style="width: 200px" class="ml-0 pl-4">
             <span class="hidden-sm-and-down" v-on:click="changeTheme">物流-Earth</span>
         </v-toolbar-title>
+        <v-btn text>
+            首页
+        </v-btn>
 
-		<v-avatar>
-			<img
-				color=""
-				size="60px"
-				src="../assets/images/car.jpg"
-				alt="car"
-			>
-    	</v-avatar>
+        <v-btn text>
+            配货大厅
+        </v-btn>
 
-        <v-text-field flat solo-inverted hide-details prepend-inner-icon="mdi-magnify" label="Search" class="hidden-sm-and-down" />
+        <!-- <v-text-field flat solo-inverted hide-details prepend-inner-icon="mdi-magnify" label="Search" class="hidden-sm-and-down" /> -->
         <v-spacer />
+
         <v-btn icon>
             <v-icon>mdi-apps</v-icon>
         </v-btn>
         <v-btn icon>
             <v-icon>mdi-bell</v-icon>
         </v-btn>
-        <v-btn icon large>
+
+        <v-menu>
+            <template v-slot:activator="{ on }">
+                <v-btn text v-on="on">
+                    个人信息
+                </v-btn>
+            </template>
+
+            <v-list>
+                <v-list-item>
+                    <v-list-item-title>退出</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
+
+        <!-- <v-btn icon large>
             <v-avatar size="32px" item>
                 <v-img src="https://cdn.vuetifyjs.com/images/logos/logo.svg" alt="Vuetify" />
             </v-avatar>
-        </v-btn>
+        </v-btn> -->
     </v-app-bar>
+
+    <!-- 主题内容 -->
     <v-content>
-        <v-container class="fill-height" fluid>
-            <v-row align="center" justify="center">
-                <v-tooltip right>
-                    <template v-slot:activator="{ on }">
-                        <v-btn :href="source" icon large target="_blank" v-on="on">
-                            <v-icon large>mdi-code-tags</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>Source</span>
-                </v-tooltip>
-                <v-tooltip right>
-                    <template v-slot:activator="{ on }">
-                        <v-btn icon large href="https://codepen.io/johnjleider/pen/MNYLdL" target="_blank" v-on="on">
-                            <v-icon large>mdi-codepen</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>Codepen</span>
-                </v-tooltip>
-            </v-row>
-        </v-container>
+
+        <template>
+            <v-container>
+                <v-row no-gutters align="center" justify="center">
+                    <v-col md="12">
+                        <v-carousel>
+                            <v-carousel-item v-for="(item,i) in images" :key="i" :src="item.src"></v-carousel-item>
+                        </v-carousel>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </template>
+
     </v-content>
+
     <v-btn bottom color="pink" dark fab fixed right @click="dialog = !dialog">
         <v-icon>mdi-plus</v-icon>
     </v-btn>
 
-	<!-- 弹出框 -->
+    <!-- 弹出框 -->
     <v-dialog v-model="dialog" width="800px">
         <v-card>
             <v-card-title class="grey darken-2" v-on:click="changeTheme">
@@ -157,18 +169,6 @@ export default {
         dialog: false,
         drawer: false,
         items: [{
-                icon: 'mdi-contacts',
-                text: 'Contacts'
-            },
-            {
-                icon: 'mdi-history',
-                text: 'Frequently contacted'
-            },
-            {
-                icon: 'mdi-content-copy',
-                text: 'Duplicates'
-            },
-            {
                 icon: 'mdi-chevron-up',
                 'icon-alt': 'mdi-chevron-down',
                 text: 'Labels',
@@ -200,20 +200,26 @@ export default {
                     },
                 ],
             },
-      
+
         ],
-	}),
-	
-	methods: {
-		changeTheme(){
-			if(this.$vuetify.theme.dark){
-				this.$vuetify.theme.dark = false
-			}else{
-				this.$vuetify.theme.dark = true
-			}
-			alert(this.$vuetify.theme.dark)
-		}
-	}
+        images: [{
+                src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+            },
+            {
+                src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+            },
+        ]
+    }),
+
+    methods: {
+        changeTheme() {
+            if (this.$vuetify.theme.dark) {
+                this.$vuetify.theme.dark = false
+            } else {
+                this.$vuetify.theme.dark = true
+            }
+            alert(this.$vuetify.theme.dark)
+        }
+    }
 }
 </script>
-

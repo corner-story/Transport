@@ -50,6 +50,7 @@ export default {
                 .then((res) => {
                     let data = res.data
                     if (data.state === "success") {
+                        
                         vm.$router.push("/home")
                     } else {
                         alert("登录失败, 请检查手机号码和密码是否正确!")

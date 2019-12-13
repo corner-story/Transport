@@ -38,6 +38,16 @@ class AppAuthTestCase(unittest.TestCase):
         res = self.client.post("/register", data=data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.json().get("state"), "error")
+    
+    def test_logout(self):
+        data = {"phone": "test", "password": "123"}
+        res = self.client.post("/login", data=data)
+        self.assertTrue(res.status_code == 200)
+        self.assertTrue(res.json().get("state") == "success")
+
+        res = self.client.post("/logout")
+        self.assertTrue(res.status_code == 200)
+        self.assertTrue(res.json().get("state") == "success")
 
 
 if __name__ == "__main__":

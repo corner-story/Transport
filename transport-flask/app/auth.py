@@ -86,9 +86,19 @@ class Register(Resource):
         return jsonify(data)
 
 
+class Logout(Resource):
+    def post(self):
+        data = {
+            "state": "success",
+            "msg": "退出成功",
+            "data": {}
+        }
+        session.clear()
+        return jsonify(data)
 
 
 
 
 api.add_resource(Login, "/api/login")
 api.add_resource(Register, "/api/register")
+api.add_resource(Logout, "/api/logout")

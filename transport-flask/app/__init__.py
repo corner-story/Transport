@@ -36,5 +36,8 @@ class Hello(Resource):
         return jsonify(res)
 
 
-api.add_resource(Hello, "/")
+api.add_resource(Hello, "/api/driver")
+
+if __name__ == "__main__":
+    app.run()
 

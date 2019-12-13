@@ -3,13 +3,16 @@ from app.models import Driver, Consigner, Good, Application
 from app import api
 from flask import request, Response, jsonify, session, make_response
 from app.extensions import db
+import pysnooper, json
 
 class Login(Resource):
-    def post(self):
-        json = request.get_json()
-        phone = json.get("phone")
-        password = json.get("password")
 
+    @pysnooper.snoop()
+    def post(self):
+        request_data = request.get_json()
+        phone = request_data.get("phone")
+        password = request_data.get("password")
+        
         user = Driver.query.filter_by(phone_number = phone).first() 
         if user is None:
             user = Consigner.query.filter_by(phone_number = phone).first()

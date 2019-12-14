@@ -1,37 +1,36 @@
 <template>
-<v-app>
-    <v-content>
-        <v-container class="fill-height" fluid>
-            <v-row align="center" justify="center">
+<div style="margin-top:128px;">
+    <el-row type="flex" justify="center">
+        <el-col :span="12">
+            <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                    <span>物流-EARTH</span>
+                    <el-button style="float: right; padding: 3px 0" type="text">点击我了解更多</el-button>
+                </div>
+                <el-form ref="form" label-width="80px">
+                    <el-form-item label="你的名字">
+                        <el-input v-model="username" placehoder="请输入你的昵称" prefix-icon="el-icon-user"></el-input>
+                    </el-form-item>
+                    <el-form-item label="手机号码">
+                        <el-input v-model="phone" placehoder="请输入手机号码" prefix-icon="el-icon-mobile-phone"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码">
+                        <el-input v-model="password" placehoder="请输入密码" prefix-icon="el-icon-lock" show-password></el-input>
+                    </el-form-item>
+                    <el-form-item label="身份">
+                        <el-radio v-model="role" label="1">我是司机</el-radio>
+                        <el-radio v-model="role" label="0">我是货主</el-radio>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="login">注册</el-button>
+                        <el-button @click="to_login" icon="el-icon-right" style="float:right">去登录?</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-card>
 
-                <v-col cols="12" sm="8" md="6">
-                    <v-card class="elevation-12">
-
-                        <v-toolbar color="primary" dark flat>
-
-                            <v-toolbar-title>物流-EARTH</v-toolbar-title>
-
-                            <v-spacer />
-                        </v-toolbar>
-                        <v-card-text>
-                            <v-form>
-                                <v-text-field v-model="username" label="昵称" prepend-icon="person" type="text"></v-text-field>
-                                <v-text-field v-model="phone" label="手机号码" name="phone" prepend-icon="phone" type="text" />
-
-                                <v-text-field v-model="password" label="密码" name="password" prepend-icon="lock" type="password" />
-                                <v-select v-model="role" :items="roles" menu-props="auto"  hide-details prepend-icon="people" single-line></v-select>
-                            </v-form>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer />
-                            <v-btn color="primary" v-on:click="register">注册</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-col>
-            </v-row>
-        </v-container>
-    </v-content>
-</v-app>
+        </el-col>
+    </el-row>
+</div>
 </template>
 
 <script>
@@ -42,33 +41,36 @@ export default {
             username: "",
             phone: "",
             password: "",
-            role: "我是司机",
-            roles: ["我是司机", "我是货主"]
+            role: "1",
         }
     },
     methods: {
         register: function () {
-            let vm = this
             let data = {
                 username: this.username,
                 phone: this.phone,
                 password: this.password,
-                role: this.role === "我是司机" ? "1" : "0"
+                role: this.role
             }
             this.$axios.post("/register", data)
                 .then((res) => {
                     let data = res.data
                     if (data.state === "success") {
-                        vm.$router.push("/login")
+                        this.$message({message: data.msg, type: "success"})
+                        this.to_login()
                     } else {
-                        alert("注册失败:" + data.msg)
+                        this.$message("注册失败:" + data.msg)
                     }
                     return true
                 })
                 .catch((error) => {
-                    alert("请求失败, 请检查网络!")
+                    this.$message.error("请求失败, 请检查网络!")
                     console.log(error)
                 })
+        },
+
+        to_login: function () {
+            this.$router.push("/login")
         }
     }
 }

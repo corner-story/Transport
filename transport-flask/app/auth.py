@@ -20,6 +20,7 @@ class Login(Resource):
         data = {
             "state": "success"
             ,"msg": ""
+            ,"data": {}
         }
         res = None
         if user and user.check_password(password):
@@ -31,13 +32,16 @@ class Login(Resource):
             session["role"] = user.user_type
             session["username"] = user.username
             
-            res = jsonify(data)
             # 设置客户端cookie
-            res.set_cookie("islogin", "true", httponly=False)
-            res.set_cookie("role", user.user_type, httponly=False)
-            res.set_cookie("username", user.username, httponly=False)
-            res.set_cookie("userid", str(user.id), httponly=False)  # 把id转化为str类型
-  
+            # res.set_cookie("islogin", "true", httponly=False)
+            # res.set_cookie("role", user.user_type, httponly=False)
+            # res.set_cookie("username", user.username, httponly=False)
+            # res.set_cookie("userid", str(user.id), httponly=False)  # 把id转化为str类型
+            data["data"]["islogin"] = "true"
+            data["data"]["role"] = user.user_type
+            data["data"]["username"] = user.username
+
+            res = jsonify(data)
         else:
             data["state"] = "error"
             data["msg"] = "登录失败, 请检查手机号和密码是否正确!"

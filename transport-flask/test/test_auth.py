@@ -33,6 +33,7 @@ class AppAuthTestCase(unittest.TestCase):
         res = self.client.post("/login", data=data)
         self.assertTrue(res.status_code == 200)
         self.assertTrue(res.json().get("state") == "success")
+        
     def test_error_register(self):
         data = {"phone": "test", "password": "123", "username": "test", "role": "1"}
         res = self.client.post("/register", data=data)

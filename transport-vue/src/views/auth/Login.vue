@@ -44,9 +44,13 @@ export default {
             this.$axios.post("/login", data)
                 .then((res) => {
                     let data = res.data
+                    console.log(data)
                     if (data.state === "success") {
-                        this.$message({message: data.msg, type: "success"})
-                        vm.$router.push("/home")
+                        this.$cookies.set("islogin", "true")
+                        this.$cookies.set("role", data.data.role)
+                        this.$cookies.set("username", data.data.username)
+
+                        this.$router.push("/home")
                     } else {
                         this.$message.error("登录失败, 请检查手机号码和密码是否正确!")
                     }

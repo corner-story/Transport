@@ -22,7 +22,7 @@
                         <el-radio v-model="role" label="0">我是货主</el-radio>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="login">注册</el-button>
+                        <el-button type="primary" @click="register">注册</el-button>
                         <el-button @click="to_login" icon="el-icon-right" style="float:right">去登录?</el-button>
                     </el-form-item>
                 </el-form>

@@ -1,10 +1,9 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify
 from app.extensions import db, migrate
-from app.models import Driver, Consigner, Good, Application
 from flask_cors import CORS
-# from flask_restful import Resource, Api
 from app import config
 from app.auth import auth
+
 
 app = Flask(__name__)
 app.config.from_object(config)

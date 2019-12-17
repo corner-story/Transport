@@ -24,7 +24,7 @@ app.register_blueprint(auth, url_prefix="/api")
 from app.utils import login_required
 
 # 命令行工具
-from app.commands import rebuild, forge
+from app.commands import rebuild, forge,forge1
 
 
 

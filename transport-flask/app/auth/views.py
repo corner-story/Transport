@@ -103,4 +103,8 @@ def logout():
 def demo():
     drivers = Driver.query.all()
     res = [{"username": driver.username, "phone_number": driver.phone_number} for driver in drivers]
-    return jsonify(res)
+    return {
+        "state": "success",
+        "msg": "操作成功",
+        "data":res
+    }

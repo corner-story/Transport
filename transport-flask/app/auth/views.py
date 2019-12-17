@@ -88,33 +88,33 @@ def register():
 @auth.route("/logout", methods=["POST"])
 @login_required
 def logout():
-    data = {
+    res = {
         "state": "success",
         "msg": "退出成功",
         "data": {}
     }
     session.clear()
-    return jsonify(data)
+    return jsonify(res)
 
 
 
-@auth.route("/driver")
-@login_required
-def demo():
-    drivers = Driver.query.all()
-    res = [{"username": driver.username, "phone_number": driver.phone_number} for driver in drivers]
-    return {
-        "state": "success",
-        "msg": "操作成功",
-        "data":res
-    }
+# @auth.route("/driver")
+# @login_required
+# def demo():
+#     drivers = Driver.query.all()
+#     res = [{"username": driver.username, "phone_number": driver.phone_number} for driver in drivers]
+#     return {
+#         "state": "success",
+#         "msg": "操作成功",
+#         "data":res
+#     }
 
-@auth.route("/good")
-def demo1():
-    goods = Good.query.all()
-    res = [{"good_name": good.good_name, "good_type": good.good_type, "transport_origin": good.transport_origin, "transport_des": good.transport_des, "good_status": good.good_status, "consigner_id": good.consigner_id} for good in goods]
-    return {
-        "state": "success",
-        "msg": "操作成功",
-        "data": res
-    }
+# @auth.route("/good")
+# def demo1():
+    # goods = Good.query.all()
+    # res = [{"good_name": good.good_name, "good_type": good.good_type, "transport_origin": good.transport_origin, "transport_des": good.transport_des, "good_status": good.good_status, "consigner_id": good.consigner_id} for good in goods]
+    # return {
+    #     "state": "success",
+    #     "msg": "操作成功",
+    #     "data": res
+    # }

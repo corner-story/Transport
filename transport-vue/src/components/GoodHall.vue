@@ -10,14 +10,18 @@
 
     <div style="margin:20px">
         <el-card class="box-card" shadow="always">
-                <span>卡片名称</span>
-                <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                <span>货物搜索</span>
+                <el-button style="float: right; padding: 3px 0" type="text">搜索</el-button>
         </el-card>
 		
 		<div v-for="good in goods" :key="good.id">
 			<br>
 			<el-card class="box-card" shadow="hover">
-				货物记录
+				<span>{{ good.good_name }}</span> &nbsp;
+				<span>{{ good.good_type }}</span> &nbsp;
+				<span>{{ good.transport_origin }}</span>--> &nbsp;
+				<span>{{ good.transport_des }}</span> &nbsp;
+				<span>{{ good.good_status }}</span> &nbsp;
 			</el-card>
 		</div>
     </div>
@@ -30,9 +34,23 @@ export default {
     data: () => {
         return {
 			search: "",
-			goods: [{id:"1"}, {id:"2"}]
+			goods: []
         }
 	},
+	created: function(){
+		this.$axios.get("/good")
+			.then((response)=>{
+				let res = response.data
+				console.log(res.data)
+				if(res.state === "success"){
+					this.$message.success(res.msg)
+					this.goods = res.data
+				}
+			})
+			.catch((error)=>{
+				console.log(error)
+			})
+	}
 
 }
 </script>

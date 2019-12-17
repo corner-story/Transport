@@ -111,10 +111,10 @@ def demo():
 
 @auth.route("/good")
 def demo1():
-    Good = Good.query.all()
+    goods = Good.query.all()
     res = [{"good_name": good.good_name, "good_type": good.good_type, "transport_origin": good.transport_origin, "transport_des": good.transport_des, "good_status": good.good_status, "consigner_id": good.consigner_id} for good in goods]
     return {
-        "stmt": "success",
+        "state": "success",
         "msg": "操作成功",
         "data": res
     }

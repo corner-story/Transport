@@ -50,6 +50,8 @@ def forge(users):
     db.session.commit()
 
     click.echo("Done...")
+
+
 @app.cli.command()
 def forge1(goods=20):
     click.echo(f"生成{goods}条good数据:")
@@ -64,7 +66,6 @@ def forge1(goods=20):
             ,transport_origin = f.address()
             , transport_des= f.address()
             ,transport_money=f.numerify()
-            , good_status=["等待司机承运","选定司机","正在运输","已到达目的地","运输完成"][randint(0,4)]
             ,backup=f.text()
             ,consigner_id= consigners[randint(0, len(consigners)-1)].id
         )

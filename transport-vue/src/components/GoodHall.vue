@@ -14,7 +14,19 @@
             <el-button style="float: right; padding: 3px 0" type="text">搜索</el-button>
         </el-card>
 
-        <div v-for="good in goods" :key="good.id">
+        <el-table :data="goods" style="width:100%;">
+            <el-table-column label="发货人" prop="username" width="80"></el-table-column>
+            <el-table-column label="货物" prop="good_name" width="80"></el-table-column>
+            <el-table-column label="发货地" prop="transport_origin"></el-table-column>
+            <el-table-column label="终点" prop="transport_des"></el-table-column>
+            <el-table-column label="#" width="120">
+                <template slot-scope="scope">
+                    <el-button style="margin-left: 10px" type="info" size="mini" @click="knowmore(scope.row.id)" plain>联系TA</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <div v-for="good in goods" :key="good.id" v-loading="loading">
             <br>
             <el-card class="box-card" shadow="always">
                 <el-row tyle="flex" justify="start">
@@ -28,9 +40,9 @@
                         <span>{{ good.transport_origin }}</span>-->
                         <span>{{ good.transport_des }}</span>
                     </el-col>
-					<el-col :span="7">
+                    <el-col :span="7">
                         <el-btn style="float: right" v-on:click="knowmore(good.id)">了解更多 {{ good.id }}</el-btn>
-					</el-col>
+                    </el-col>
                 </el-row>
 
             </el-card>
@@ -45,14 +57,15 @@ export default {
     data: () => {
         return {
             search: "",
-            goods: []
+            goods: [],
+            loading: false
         }
     },
     created: function () {
         this.$axios.get("/goods", {
                 params: {
                     page: 1,
-                    limit: 6
+                    limit: 8
                 }
             })
             .then((response) => {
@@ -61,14 +74,16 @@ export default {
                 if (res.state === "success") {
                     this.$message.success(res.msg)
                     this.goods = res.data
+
                 }
+
             })
             .catch((error) => {
                 console.log(error)
             })
     },
     methods: {
-        knowmore(id){
+        knowmore(id) {
             this.$message.info("货物ID: " + id)
         }
     }

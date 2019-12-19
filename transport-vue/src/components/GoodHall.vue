@@ -10,10 +10,13 @@
 
     <div style="margin:20px;">
         <el-card class="box-card" shadow="always">
-            <span>货物搜索</span>
+            <el-row :gutter="2">
+                <el-col v-for="city in citys" :key="city.name" :span="2">{{ city.name }}</el-col>
+            </el-row>
             <el-button style="float: right; padding: 3px 0" type="text">搜索</el-button>
         </el-card>
 
+        <el-divider></el-divider>
         <el-table :data="goods" style="width:100%;">
             <el-table-column label="发货人" prop="username" width="80"></el-table-column>
             <el-table-column label="货物" prop="good_name" width="80"></el-table-column>
@@ -41,7 +44,7 @@
                         <span>{{ good.transport_des }}</span>
                     </el-col>
                     <el-col :span="7">
-                        <el-btn style="float: right" v-on:click="knowmore(good.id)">了解更多 {{ good.id }}</el-btn>
+                        <el-button style="float: right" v-on:click="knowmore(good.id)">了解更多 {{ good.id }}</el-button>
                     </el-col>
                 </el-row>
 
@@ -58,10 +61,12 @@ export default {
         return {
             search: "",
             goods: [],
-            loading: false
+            loading: false,
+            citys: []       
         }
     },
     created: function () {
+        // 获取货物信息
         this.$axios.get("/goods", {
                 params: {
                     page: 1,
@@ -74,12 +79,19 @@ export default {
                 if (res.state === "success") {
                     this.$message.success(res.msg)
                     this.goods = res.data
-
                 }
 
             })
             .catch((error) => {
                 console.log(error)
+            })
+
+        // 获取城市信息
+        this.$axios.get("https://unpkg.com/province-city-china@4.0.3/dist/province.json", {withCredentials: false})
+            .then((response) =>{
+                let data = response.data
+                console.log(data)
+                this.citys = data
             })
     },
     methods: {

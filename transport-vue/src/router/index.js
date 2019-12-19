@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../views/auth/Index.vue'
+import GoodDetail from "../views/good/GoodDetail.vue"
 
 Vue.use(VueRouter)
 
@@ -31,9 +32,14 @@ const routes = [{
 	{
 		path: "/home",
 		name: "home",
-		component: () => import("../views/Home.vue"),
-		
+		component: () => import("../views/Home.vue"),	
+	},
+	{
+		path: "/good/:id",
+		name: "good",
+		component: GoodDetail
 	}
+
 ]
 
 const router = new VueRouter({

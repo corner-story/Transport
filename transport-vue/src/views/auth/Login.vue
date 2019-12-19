@@ -50,7 +50,7 @@ export default {
                         this.$cookies.set("role", data.data.role)
                         this.$cookies.set("username", data.data.username)
 
-                        this.$router.push("/home")
+                        window.top.location.href = "/home"
                     } else {
                         this.$message.error("登录失败, 请检查手机号码和密码是否正确!")
                     }

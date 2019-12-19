@@ -10,10 +10,17 @@
 
     <div style="margin:20px;">
         <el-card class="box-card" shadow="always">
-            <el-row :gutter="2">
-                <el-col v-for="city in citys" :key="city.name" :span="2">{{ city.name }}</el-col>
-            </el-row>
-            <el-button style="float: right; padding: 3px 0" type="text">搜索</el-button>
+            <div>
+                <el-row>
+                    <el-col :span="1"><strong>城市:</strong></el-col>
+                    <el-col v-for="city in citys.display" :key="city.name" :span="1"><el-link @click="search_info(city.name.substr(0,2))"> {{ city.name.substr(0,2) }}</el-link></el-col>
+                    <el-col :span="6"><el-button size="mini" style="float:right;">所有地区</el-button></el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="1"><strong>类型:</strong></el-col>
+                    <el-col v-for="goodtype in goodtypes" :key="goodtype" :span="1"><el-link @click="search_info(goodtype)"> {{ goodtype }}</el-link></el-col>
+                </el-row>
+            </div>
         </el-card>
 
         <el-divider></el-divider>
@@ -24,32 +31,12 @@
             <el-table-column label="终点" prop="transport_des"></el-table-column>
             <el-table-column label="#" width="120">
                 <template slot-scope="scope">
-                    <el-button style="margin-left: 10px" type="info" size="mini" @click="knowmore(scope.row.id)" plain>联系TA</el-button>
+                    <el-button style="margin-left: 10px" type="info" size="mini" @click="good_details(scope.row.id)" plain>货物详情</el-button>
                 </template>
             </el-table-column>
         </el-table>
 
-        <div v-for="good in goods" :key="good.id" v-loading="loading">
-            <br>
-            <el-card class="box-card" shadow="always">
-                <el-row tyle="flex" justify="start">
-                    <el-col :span="1">
-                        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-                    </el-col>
-                    <el-col :span="2">
-                        <span>{{ good.username }}</span>
-                    </el-col>
-                    <el-col :span="12">
-                        <span>{{ good.transport_origin }}</span>-->
-                        <span>{{ good.transport_des }}</span>
-                    </el-col>
-                    <el-col :span="7">
-                        <el-button style="float: right" v-on:click="knowmore(good.id)">了解更多 {{ good.id }}</el-button>
-                    </el-col>
-                </el-row>
-
-            </el-card>
-        </div>
+        
     </div>
 </div>
 </template>
@@ -62,7 +49,11 @@ export default {
             search: "",
             goods: [],
             loading: false,
-            citys: []       
+            citys: {
+                display: [],
+                all: []
+            },
+            goodtypes: ["水果", "玻璃", "金属", "其他"]      
         }
     },
     created: function () {
@@ -90,13 +81,19 @@ export default {
         this.$axios.get("https://unpkg.com/province-city-china@4.0.3/dist/province.json", {withCredentials: false})
             .then((response) =>{
                 let data = response.data
-                console.log(data)
-                this.citys = data
+                // console.log(data)
+                let length = data.length
+                this.citys.display = data.slice(0, length/2)
+                this.citys.all = data
             })
     },
     methods: {
-        knowmore(id) {
-            this.$message.info("货物ID: " + id)
+        good_details(id) {
+            // this.$message.info("货物ID: " + id)
+            this.$router.push({ name: 'good', params: { id: id }})
+        },
+        search_info(city){
+            this.$message.info("搜索城市: " + city)
         }
     }
 

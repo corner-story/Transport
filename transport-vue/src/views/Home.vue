@@ -8,6 +8,7 @@
                 <template slot="title">{{ username }}</template>
                 <el-menu-item index="5-1">个人中心</el-menu-item>
                 <el-menu-item index="5-2">我的消息</el-menu-item>
+                <el-menu-item index="5-3" @click="logout">退出</el-menu-item>
             </el-submenu>
         </el-menu>
     <el-main>
@@ -47,6 +48,12 @@ export default {
                 this.$vuetify.theme.dark = true
             }
             alert(this.$vuetify.theme.dark)
+        },
+        logout() {
+            // 清除所有cookie
+            this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie))
+            // 回到首页
+            this.$router.push("/")
         },
 
         to_home() {

@@ -78,7 +78,7 @@ class Good(db.Model):
     transport_origin = db.Column(db.String(255), nullable = False, index=True)
     transport_des = db.Column(db.String(255), nullable= False, index=True)
     transport_money = db.Column(db.String(255))
-    good_status = db.Column(db.String(120), default="等待司机承运")
+    isactive = db.Column(db.Integer, default=1)     # 用该字段记录是否还可以申请该货物
     backup = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
@@ -97,6 +97,7 @@ class Application(db.Model):
     result = db.Column(db.String(120), default="等待审核", index=True)
     backup = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    good_status = db.Column(db.String(120), default="等待司机承运")
 
     # 一个司机可以有多个申请
     driver_id = db.Column(db.Integer, db.ForeignKey("driver.id"))

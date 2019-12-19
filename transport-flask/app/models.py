@@ -24,6 +24,9 @@ class Driver(db.Model):
     # 一个司机可以有多个申请
     applications = db.relationship("Application", backref="driver")
 
+    # 一个司机可以有多个入账记录
+    accounts = db.relationship("Account", backref="driver")
+
     @property
     def password(self):
         return self.password_hash
@@ -74,13 +77,19 @@ class Consigner(db.Model):
 class Good(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement = True)
     good_name = db.Column(db.String(255), nullable = False, index=True)
-    good_type = db.Column(db.String(255), index=True)
+    # good_type = db.Column(db.String(255), index=True)
     transport_origin = db.Column(db.String(255), nullable = False, index=True)
     transport_des = db.Column(db.String(255), nullable= False, index=True)
     transport_money = db.Column(db.String(255))
     isactive = db.Column(db.Integer, default=1)     # 用该字段记录是否还可以申请该货物
     backup = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+
+    # 货物和账单记录一对多
+    accounts = db.relationship("Account", backref="good")
+
+    # 货物类型和货物是一对多
+    goodtype_id = db.Column(db.Integer, db.ForeignKey("goodtype.id"))
 
     # 发货人和货物是一对多
     consigner_id = db.Column(db.Integer, db.ForeignKey("consigner.id"))
@@ -90,6 +99,7 @@ class Good(db.Model):
 
     def __repr__(self):
         return f"<Good: {self.good_name}, {self.good_status}>"
+
 
 # 拉货申请
 class Application(db.Model):
@@ -107,3 +117,34 @@ class Application(db.Model):
 
     def __repr__(self):
         return f"<Application: {self.id}, {self.result}>"
+
+# 获取类型
+class GoodType(db.Model):
+    __tablename__ = "goodtype"
+    id = db.Column(db.Integer, primary_key=True, autoincrement = True)
+    type_name = db.Column(db.String(255))
+    good_price = db.Column(db.Integer)  # 该种货物类型每吨每公里的单价
+
+    # 货物类型和货物一对多
+    goods = db.relationship("Good", backref="goodtype")
+
+    def __repr__(self):
+        return f"<GoodType: {self.type_name}, {self.good_price}>"
+
+
+# 入账记录
+class Account(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement = True)
+
+    # 一个司机可以有多个入账记录
+    driver_id = db.Column(db.Integer, db.ForeignKey("driver.id"))
+
+    # 一个货物对应多个结算账单
+    good_id = db.Column(db.Integer, db.ForeignKey("good.id"))
+
+    # 本次拉货所得的money
+    money = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f"<Account: {self.money}>"
+

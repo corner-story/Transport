@@ -24,7 +24,7 @@ def get_available_goods():
     page = int(page)
     limit = int(limit)
 
-    goods = Good.query.filter_by(good_status="等待司机承运").order_by(
+    goods = Good.query.filter_by(isactive=1).order_by(
         Good.timestamp.desc()).paginate(page, limit, error_out=False)
     
     goods = [

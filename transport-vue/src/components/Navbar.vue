@@ -5,7 +5,7 @@
     <el-menu-item index="4">订单管理</el-menu-item>
     <el-submenu index="5" style="float:right;margin-right:32px;">
         <template slot="title">{{ username }}</template>
-        <el-menu-item index="5-1">个人中心</el-menu-item>
+        <el-menu-item index="5-1" @click="to_selfcenter">个人中心</el-menu-item>
         <el-menu-item index="5-2">我的消息</el-menu-item>
         <el-menu-item index="5-3" @click="logout">退出</el-menu-item>
     </el-submenu>
@@ -28,8 +28,11 @@ export default {
         to_about() {
 
         },
+        to_selfcenter() {
+            this.$router.push({ name: 'user', params: { usertype: 'self'}, query: {id: '0'}})
+        },
         logout() {
-            this.$axios.post("/logout")
+            this.$axios.post("/logout/")
                 .then((response) =>{
                     // 清除所有cookie
                     this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie))

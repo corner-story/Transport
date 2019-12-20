@@ -41,7 +41,7 @@ export default {
                 phone: this.phone,
                 password: this.password
             }
-            this.$axios.post("/login", data)
+            this.$axios.post("/login/", data)
                 .then((res) => {
                     let data = res.data
                     console.log(data)

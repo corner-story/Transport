@@ -17,17 +17,24 @@ axios.interceptors.request.use(function (config) {
 });
 
 // Add a response interceptor
-axios.interceptors.response.use(function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    return response;
-}, function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-
-    console.log("axios error")
-    console.log(error)
-    return Promise.reject(error);
-});
+axios.interceptors.response.use(
+    response => {
+        return response;
+    },
+    error => {
+        console.log("axios error!")
+        if (error.response) {
+            switch (error.response.status) {
+                case 403:
+                    // 返回 401 清除token信息并跳转到登录页面
+                    // 清除所有cookie
+                    this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie))
+                    // 回到首页
+                    window.top.location.href = "/"
+                    break;
+            }
+        }
+        return Promise.reject(error.response.data) // 返回接口返回的错误信息
+    });
 
 export default axios.create()

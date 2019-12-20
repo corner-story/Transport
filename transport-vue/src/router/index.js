@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../views/auth/Index.vue'
 import GoodDetail from "../views/good/GoodDetail.vue"
+import UserDetail from "../views/user/UserDetail.vue"
 
 Vue.use(VueRouter)
 
@@ -38,6 +39,11 @@ const routes = [{
 		path: "/good/:id",
 		name: "good",
 		component: GoodDetail
+	},
+	{
+		path: "/user/:usertype",
+		name: "user",
+		component: UserDetail
 	}
 
 ]

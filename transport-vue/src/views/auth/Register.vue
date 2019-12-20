@@ -52,7 +52,7 @@ export default {
                 password: this.password,
                 role: this.role
             }
-            this.$axios.post("/register", data)
+            this.$axios.post("/register/", data)
                 .then((res) => {
                     let data = res.data
                     if (data.state === "success") {

@@ -25,7 +25,12 @@
 
         <el-divider></el-divider>
         <el-table :data="goods" style="width:100%;">
-            <el-table-column label="发货人" prop="username" width="80"></el-table-column>
+            <el-table-column label="发货人" width="120">
+                <template slot-scope="scope">
+                    <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                    <el-link :underline="false" @click="to_usercenter(scope.row.consigner_id)">{{ scope.row.username }}</el-link>
+                </template>
+            </el-table-column>
             <el-table-column label="货物" prop="good_name" width="80"></el-table-column>
             <el-table-column label="发货地" prop="transport_origin"></el-table-column>
             <el-table-column label="终点" prop="transport_des"></el-table-column>
@@ -58,7 +63,7 @@ export default {
     },
     created: function () {
         // 获取货物信息
-        this.$axios.get("/goods", {
+        this.$axios.get("/goods/", {
                 params: {
                     page: 1,
                     limit: 8
@@ -71,11 +76,8 @@ export default {
                     this.$message.success(res.msg)
                     this.goods = res.data
                 }
-
             })
-            .catch((error) => {
-                console.log(error)
-            })
+            
 
         // 获取城市信息
         this.$axios.get("https://unpkg.com/province-city-china@4.0.3/dist/province.json", {withCredentials: false})
@@ -94,6 +96,13 @@ export default {
         },
         search_info(city){
             this.$message.info("搜索城市: " + city)
+        },
+        to_usercenter(id){
+            // 转到consigner的个人界面
+            if(id !== null){
+                // this.$message.info("consigner id: " + id)
+                this.$router.push({ name: 'user', params: { usertype: 'consigner'}, query: {id: id}})
+            }
         }
     }
 

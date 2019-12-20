@@ -23,7 +23,7 @@ def consigner_info():
         res["msg"] = "error"
         return jsonify(res)
 
-     data = {
+    data = {
         "id": consigner.id,
         "username": consigner.username,
         "password_hash": consigner.password_hash,
@@ -56,7 +56,7 @@ def driver_info():
         res["msg"] = "error"
         return jsonify(res)
 
-     data = {
+    data = {
         "id": driver.id,
         "username": driver.username,
         "password_hash": driver.password_hash,

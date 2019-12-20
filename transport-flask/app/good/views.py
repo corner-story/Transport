@@ -1,13 +1,13 @@
 from app.good import good
 from flask import request, jsonify
-from app.models import Good
+from app.models import Good, Application
 from app.extensions import db
 from app.utils import login_required
 import pysnooper
 
 
 # 获取所有可利用的，即处于"等待司机承运"状态的货物
-@good.route("/goods")
+@good.route("/goods/")
 @login_required
 def get_available_goods():
     res = {
@@ -74,6 +74,7 @@ def get_one_good():
     res["data"] = data
     return jsonify(res)
 
+
 #申请货物
 @good.route("/application/", methods=["POST"])
 @login_required
@@ -85,10 +86,12 @@ def send_application():
     driver_id = request_data.get("driver_id")
     good_id = request_data.get("good_id")
 
-    data = {
-        "backup" :application.backup,
-        "timestamp" ：applicaton.timestamp
-    }
+    if driver_id == None or good_id == None:
+        res["state"] = "error"
+        res["msg"] = "fuck you!"
+        return jsonify(res)
+
+    application = Application(driver_id=driver_id, good_id=good_id)
 
     try:
         db.session.add(application)
@@ -97,5 +100,5 @@ def send_application():
         data["state"] = "error"
         data["msg"] = str(e)
 
-    res["data"] = data
+    
     return jsonify(res)

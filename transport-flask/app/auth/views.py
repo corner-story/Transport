@@ -5,7 +5,7 @@ from app.extensions import db
 from app.utils import login_required
 
 
-@auth.route("/login", methods=["POST"])
+@auth.route("/login/", methods=["POST"])
 def login():
     request_data = request.get_json()
     phone = request_data.get("phone")
@@ -46,7 +46,7 @@ def login():
     return res
 
 
-@auth.route("/register", methods=["POST"])
+@auth.route("/register/", methods=["POST"])
 def register():
     json = request.get_json()
     username = json.get("username")
@@ -85,7 +85,7 @@ def register():
     return jsonify(data)
 
 
-@auth.route("/logout", methods=["POST"])
+@auth.route("/logout/", methods=["POST"])
 @login_required
 def logout():
     res = {

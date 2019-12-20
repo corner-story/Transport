@@ -34,7 +34,8 @@ def get_available_goods():
             "transport_origin": good.transport_origin,
             "transport_des": good.transport_des,
             "transport_money": good.transport_money,
-            "username": good.consigner.username
+            "username": good.consigner.username,
+            "consigner_id": good.consigner.id
         }
         for good in goods.items
     ]
@@ -69,6 +70,32 @@ def get_one_good():
         "consigner_id": good.consigner.id,
         "phone_number": good.consigner.phone_number
     }
+
+    res["data"] = data
+    return jsonify(res)
+
+#申请货物
+@good.route("/application/", methods=["POST"])
+@login_required
+def send_application():
+    res = {
+        "state": "success", "msg": "send applicaton successfully", "data": []
+    }
+    request_data = request.get_json()
+    driver_id = request_data.get("driver_id")
+    good_id = request_data.get("good_id")
+
+    data = {
+        "backup" :application.backup,
+        "timestamp" ：applicaton.timestamp
+    }
+
+    try:
+        db.session.add(application)
+        db.session.commit()
+    except Exception as e:
+        data["state"] = "error"
+        data["msg"] = str(e)
 
     res["data"] = data
     return jsonify(res)

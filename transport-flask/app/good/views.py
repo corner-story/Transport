@@ -1,5 +1,5 @@
 from app.good import good
-from flask import request, jsonify
+from flask import request, jsonify,session
 from app.models import Good, Application
 from app.extensions import db
 from app.utils import login_required
@@ -83,7 +83,7 @@ def send_application():
         "state": "success", "msg": "send applicaton successfully", "data": []
     }
     request_data = request.get_json()
-    driver_id = session.get("user.id")
+    driver_id = session.get("id")
     good_id = request_data.get("good_id")
 
     if driver_id == None or good_id == None:

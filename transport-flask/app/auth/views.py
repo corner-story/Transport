@@ -27,6 +27,7 @@ def login():
         session["islogin"] = True
         session["role"] = user.user_type
         session["username"] = user.username
+        session["id"] = user.id
 
         # 设置客户端cookie
         # res.set_cookie("islogin", "true", httponly=False)

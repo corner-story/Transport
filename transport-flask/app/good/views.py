@@ -83,7 +83,7 @@ def send_application():
         "state": "success", "msg": "send applicaton successfully", "data": []
     }
     request_data = request.get_json()
-    driver_id = request_data.get("driver_id")
+    driver_id = session.get("user.id")
     good_id = request_data.get("good_id")
 
     if driver_id == None or good_id == None:

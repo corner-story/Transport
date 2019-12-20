@@ -104,7 +104,7 @@ class Good(db.Model):
 # 拉货申请
 class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement = True)
-    result = db.Column(db.String(120), default="等待审核", index=True)
+    result = db.Column(db.String(120), default="等待审核", index=True)#
     backup = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     good_status = db.Column(db.String(120), default="等待司机承运")

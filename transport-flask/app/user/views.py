@@ -8,19 +8,23 @@ import pysnooper
 
 
 #货主的信息
-@user.route("/consigner")
+@user.route("/consigner/")
 @login_required
 def consigner_info():
     res={
-         "state": "success", "msg": "get consigner information successfully", "data": []
+         "state": "success", "msg": "get consigner information successfully", "data": {}
     }
     
     consigner_id = request.args.get("id")
-    consigner = Consigner.query.filter_by(id=consigner_id).first()
-    
     if(consigner_id == None):
         res["state"] = "error"
-        res["msg"] = "error"
+        res["msg"] = "error id: None"
+        return jsonify(res)
+    try:
+        consigner = Consigner.query.filter_by(id=consigner_id).first()
+    except Exception as e:
+        res["state"] = "error"
+        res["msg"] = str(e)
         return jsonify(res)
 
     data = {
@@ -41,19 +45,23 @@ def consigner_info():
     return jsonify(res)
 
 #司机的信息
-@user.route("/driver")
+@user.route("/driver/")
 @login_required
 def driver_info():
     res={
-         "state": "success", "msg": "get driver information successfully", "data": []
+         "state": "success", "msg": "get driver information successfully", "data": {}
     }
 
     driver_id = request.args.get("id")
-    driver = Consigner.query.filter_by(id=driver_id).first()
-    
     if(driver_id == None):
         res["state"] = "error"
-        res["msg"] = "error"
+        res["msg"] = "error id: None"
+        return jsonify(res)
+    try:
+        driver = Consigner.query.filter_by(id=driver_id).first()
+    except Exception as e:
+        res["state"] = "error"
+        res["msg"] = str(e)
         return jsonify(res)
 
     data = {
@@ -65,10 +73,10 @@ def driver_info():
         "car_type": driver.car_type,
         "car_number": driver.car_number,
         "transport_type": driver.transport_type,
-        "account": consigner.account,
-        "user_type": consigner.user_type,
-        "backup": consigner.backup,
-        "timestamp":consigner.timestamp
+        "account": driver.account,
+        "user_type": driver.user_type,
+        "backup": driver.backup,
+        "timestamp":driver.timestamp
     }
 
     res["data"] = data

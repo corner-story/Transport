@@ -49,6 +49,7 @@ export default {
                         this.$cookies.set("islogin", "true")
                         this.$cookies.set("role", data.data.role)
                         this.$cookies.set("username", data.data.username)
+                        this.$cookies.set("id", data.data.id)
 
                         window.top.location.href = "/home"
                     } else {

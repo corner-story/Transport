@@ -29,7 +29,7 @@ export default {
 
         },
         to_selfcenter() {
-            this.$router.push({ name: 'user', params: { usertype: 'self'}, query: {id: '0'}})
+            this.$router.push({ name: 'user', params: { usertype: this.$cookies.get("role")}, query: {id: this.$cookies.get("id")}})
         },
         logout() {
             this.$axios.post("/logout/")

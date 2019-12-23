@@ -22,20 +22,40 @@
     </div>
     <div style="margin:60px;"></div>
     <div>
-        <el-tabs tab-position="right" style="height: 200px;">
-            <el-tab-pane label="用户管理">用户管理</el-tab-pane>
-            <el-tab-pane label="配置管理">配置管理</el-tab-pane>
-            <el-tab-pane label="角色管理">角色管理</el-tab-pane>
+        <el-tabs tab-position="right">
+            <el-tab-pane label="个人信息">个人信息</el-tab-pane>
+
+            <el-tab-pane label="申请管理">
+                <Application v-bind:id="id"></Application>
+            </el-tab-pane>
+
+            <el-tab-pane label="货物跟踪">
+                <AgreedGood v-bind:id="id"></AgreedGood>
+            </el-tab-pane>
+
+            <el-tab-pane label="货主发货">货主发货</el-tab-pane>
+
+            <el-tab-pane label="司机评价">司机评价</el-tab-pane>
+
             <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
         </el-tabs>
     </div>
+    <div style="margin-top:400px;">123</div>
 </div>
 </template>
 
 <script>
+
+import Application from "./applications/Application"
+import AgreedGood from './applications/AgreedGood'
+
+
 export default {
     name: "Consigner",
-    props: ["id"],
+    props: ["id"],   //用户id
+    components: {
+        Application, AgreedGood
+    },
     data: () => {
         return {
             value: 3,

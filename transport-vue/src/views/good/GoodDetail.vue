@@ -57,7 +57,7 @@ export default {
     computed: {
         isdisplay(){
             let role = this.$cookies.get("role")
-            if(role !== "Driver"){
+            if(role !== "driver"){
                 return false
             }
             return true

@@ -12,7 +12,13 @@ def login_required(func):
             }
             return make_response(res, 403)
         return func(*args, **kw)
-    return wrapper   
+    return wrapper  
+
+# 根据货物当前状态获取下一个状态
+def next_status(curr):
+    pass
+
+
 
 
 

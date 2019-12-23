@@ -25,7 +25,7 @@ def login():
 
         # 记录session
         session["islogin"] = True
-        session["role"] = user.user_type
+        session["role"] = user.user_type.lower()
         session["username"] = user.username
         session["id"] = user.id
 
@@ -35,8 +35,9 @@ def login():
         # res.set_cookie("username", user.username, httponly=False)
         # res.set_cookie("userid", str(user.id), httponly=False)  # 把id转化为str类型
         data["data"]["islogin"] = "true"
-        data["data"]["role"] = user.user_type
+        data["data"]["role"] = user.user_type.lower()
         data["data"]["username"] = user.username
+        data["data"]["id"] = user.id
 
         res = jsonify(data)
     else:

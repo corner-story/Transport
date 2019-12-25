@@ -18,7 +18,7 @@
                 </el-row>
                 <el-row>
                     <el-col :span="1"><strong>类型:</strong></el-col>
-                    <el-col v-for="goodtype in goodtypes" :key="goodtype" :span="1"><el-link @click="search_info(goodtype)"> {{ goodtype }}</el-link></el-col>
+                    <el-col v-for="goodtype in goodtypes" :key="goodtype" :span="2"><el-link @click="search_info(goodtype.id)"> {{ goodtype.type_name }}</el-link></el-col>
                 </el-row>
             </div>
         </el-card>
@@ -32,8 +32,10 @@
                 </template>
             </el-table-column>
             <el-table-column label="货物" prop="good_name" width="80"></el-table-column>
-            <el-table-column label="发货地" prop="transport_origin"></el-table-column>
-            <el-table-column label="终点" prop="transport_des"></el-table-column>
+            <el-table-column label="发货地" prop="transport_origin" width="280"></el-table-column>
+            <el-table-column label="终点" prop="transport_des" width="280"></el-table-column>
+            <el-table-column label="运送时间" prop="transport_time"></el-table-column>
+            <el-table-column label="运送费用" prop="transport_money"></el-table-column>
             <el-table-column label="#" width="120">
                 <template slot-scope="scope">
                     <el-button style="margin-left: 10px" type="info" size="mini" @click="good_details(scope.row.id)" plain>货物详情</el-button>
@@ -58,7 +60,7 @@ export default {
                 display: [],
                 all: []
             },
-            goodtypes: ["水果", "玻璃", "金属", "其他"]      
+            goodtypes: []      
         }
     },
     created: function () {
@@ -78,7 +80,6 @@ export default {
                 }
             })
             
-
         // 获取城市信息
         this.$axios.get("https://unpkg.com/province-city-china@4.0.3/dist/province.json", {withCredentials: false})
             .then((response) =>{
@@ -87,6 +88,15 @@ export default {
                 let length = data.length
                 this.citys.display = data.slice(0, length/2)
                 this.citys.all = data
+            })
+        
+        // 获取货物种类信息
+        this.$axios.get("/goodtypes")
+            .then((response)=>{
+                let data = response.data
+                if(data.state === "success"){
+                    this.goodtypes = data.data
+                }
             })
     },
     methods: {

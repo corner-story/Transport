@@ -81,6 +81,7 @@ class Good(db.Model):
     transport_origin = db.Column(db.String(255), nullable = False, index=True)
     transport_des = db.Column(db.String(255), nullable= False, index=True)
     transport_money = db.Column(db.String(255))
+    transport_time = db.Column(db.String(255))
     isactive = db.Column(db.Integer, default=1)     # 用该字段记录是否还可以申请该货物
     backup = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)

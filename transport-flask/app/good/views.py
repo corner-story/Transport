@@ -1,6 +1,6 @@
 from app.good import good
 from flask import request, jsonify, session
-from app.models import Good, Application
+from app.models import Good, Application, GoodType
 from app.extensions import db
 from app.utils import login_required, next_status
 from sqlalchemy import and_
@@ -35,6 +35,7 @@ def get_available_goods():
             "transport_origin": good.transport_origin,
             "transport_des": good.transport_des,
             "transport_money": good.transport_money,
+            "transport_time": good.transport_time,
             "username": good.consigner.username,
             "consigner_id": good.consigner.id
         }
@@ -277,3 +278,61 @@ def driver_change_transport_status():
     db.session.commit()
 
     return jsonify(res)
+
+# 获取所有货物种类
+@good.route("/goodtypes/")
+@login_required
+def get_all_goodtypes():
+    res = {
+        "state": "success", "msg": "get goodtypes successfully", "data": []
+    }
+    goodtypes = GoodType.query.order_by(GoodType.type_name.desc()).all()
+
+    goodtypes = [
+        {
+            "id": goodtype.id,
+            "type_name": goodtype.type_name
+        }
+        for goodtype in goodtypes
+    ]
+    res["data"] = goodtypes
+    return jsonify(res)
+
+
+# 货主发布货物
+@good.route("/sendgood/", methods=["POST"])
+@login_required
+def consigner_send_good():
+    res = {
+        "state": "success", "msg": "change applicaton-state successfully", "data": []
+    }
+
+    request_data = request.get_json()
+    good_name = request_data.get("good_name")
+    good_type = request_data.get("good_type")
+    transport_origin = request_data.get("transport_origin")
+    transport_des = request_data.get("transport_des")
+    transport_money = request_data.get("transport_money")
+    transport_time = request_data.get("transport_time")
+    backup = request_data.get("backup")
+
+    try:
+        good = Good(
+            good_name=good_name,
+            goodtype_id=good_type,
+            transport_origin=transport_origin,
+            transport_des=transport_des,
+            transport_money=transport_money,
+            transport_time=transport_time,
+            backup=backup
+        )
+        good.consigner_id = session.get("id")
+
+        db.session.add(good)
+        db.session.commit()
+
+    except Exception as e:
+        res["msg"] = str(e)
+    
+    return jsonify(res)
+    

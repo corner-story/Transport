@@ -24,16 +24,8 @@
     <div>
         <el-tabs tab-position="right">
             <el-tab-pane label="个人信息">个人信息</el-tab-pane>
-
-            <el-tab-pane label="申请管理">
-                <Application v-bind:id="id"></Application>
-            </el-tab-pane>
-
-            <el-tab-pane label="货物跟踪">
-                <AgreedGood v-bind:id="id"></AgreedGood>
-            </el-tab-pane>
-
-            <el-tab-pane label="货主发货">货主发货</el-tab-pane>
+            
+            <el-tab-pane label="最新货物发布">最新货物发布</el-tab-pane>
 
             <el-tab-pane label="司机评价">司机评价</el-tab-pane>
 
@@ -46,16 +38,14 @@
 
 <script>
 
-import Application from "./applications/Application"
-import AgreedGood from './applications/AgreedGood'
+// import Application from "./applications/Application"
+// import AgreedGood from './applications/AgreedGood'
 
 
 export default {
     name: "Consigner",
     props: ["id"],   //用户id
-    components: {
-        Application, AgreedGood
-    },
+    
     data: () => {
         return {
             value: 3,

@@ -10,7 +10,7 @@
 		<el-table-column label="货物状态" prop="good_status" width="120"></el-table-column>
         <el-table-column label="#" width="120">
             <template slot-scope="scope">
-                <el-button size="mini" v-if="scope.row.good_status === '已到达目的地'">确定收货</el-button>
+                <el-button size="mini" v-if="scope.row.good_status === '运输完成'" type="success">确定收货</el-button>
                 <el-button size="mini" v-else disabled>确定收货</el-button>
             </template>
         </el-table-column>
@@ -21,7 +21,6 @@
 <script>
 export default {
     name: "AgreedGood",
-    props: ["id"], //发货人id
     data: () => {
         return {
             goods: []

@@ -25,7 +25,7 @@ export default {
             applications: []
         }
     },
-    props: ["id"],   //用户id
+    // props: ["id"],   //用户id
     methods: {
         isagree(id, state) {
             this.$message.info(id + " " + state)

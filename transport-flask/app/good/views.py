@@ -2,7 +2,7 @@ from app.good import good
 from flask import request, jsonify, session
 from app.models import Good, Application
 from app.extensions import db
-from app.utils import login_required
+from app.utils import login_required, next_status
 from sqlalchemy import and_
 import pysnooper
 
@@ -104,6 +104,7 @@ def send_application():
     return jsonify(res)
 
 
+# 货主查看所有对自己货物的申请
 @good.route("/applications/")
 @login_required
 def get_available_applications():
@@ -116,7 +117,7 @@ def get_available_applications():
         return jsonify(res)
     consigner_id = session.get("id")
     goods = Good.query.filter(and_(Good.consigner_id == consigner_id,
-                              Good.isactive == 1)).order_by(Good.timestamp.desc()).all()
+                                   Good.isactive == 1)).order_by(Good.timestamp.desc()).all()
     goods = [good.id for good in goods]
 
     applications = Application.query.filter(and_(Application.good_id.in_(
@@ -173,10 +174,12 @@ def get_agreed_applications():
     consigner_id = session.get("id")
     # applications = Application.query.filter(and_(Application.good.consigner.id == consigner_id, Application.result=="同意")).order_by(Application.timestamp.desc()).all()
 
-    goods = Good.query.filter(and_(Good.consigner_id==consigner_id, Good.isactive==1)).order_by(Good.timestamp.desc()).all()
+    goods = Good.query.filter(and_(Good.consigner_id == consigner_id,
+                                   Good.isactive == 1)).order_by(Good.timestamp.desc()).all()
     goods = [good.id for good in goods]
 
-    applications = Application.query.filter(and_(Application.good_id.in_(goods), Application.result == "同意")).order_by(Application.timestamp.desc()).all()
+    applications = Application.query.filter(and_(Application.good_id.in_(
+        goods), Application.result == "同意")).order_by(Application.timestamp.desc()).all()
 
     data = [
         {
@@ -196,4 +199,81 @@ def get_agreed_applications():
     ]
 
     res["data"] = data
+    return jsonify(res)
+
+
+# 司机获取自己所有的申请记录
+@good.route("/dapps/")
+@login_required
+def get_all_driver_applications():
+    res = {
+        "state": "success", "msg": "get applicatons successfully", "data": []
+    }
+    # 申请状态: all(所有货物), "同意", "拒绝", "等待审核"
+    app_type = request.args.get("app_type")
+    if session.get("role", None) == None or session.get("role") != "driver":
+        res["state"] = "error"
+        res["msg"] = "fuck you!"
+        return jsonify(res)
+
+    if app_type == None:
+        app_type = "all"
+
+    if app_type not in ["all", "同意", "拒绝", "等待审核"]:
+        res["state"] = "error"
+        res["msg"] = "fuck you!"
+        return jsonify(res)
+
+    driver_id = session.get("id")
+    applications = []
+    if app_type == "all":
+        applications = Application.query.filter_by(
+            driver_id=driver_id).order_by(Application.timestamp.desc()).all()
+    else:
+        applications = Application.query.filter(and_(
+            Application.driver_id == driver_id, Application.result == app_type)).order_by(Application.timestamp.desc()).all()
+
+    applications = [
+        {
+            "id": application.id,
+            "result": application.result,
+            "backup": application.backup,
+            "timestamp": application.timestamp,
+            "good_status": application.good_status,
+            "driver_name": application.driver.username,
+            "driver_phone": application.driver.phone_number,
+            "good_name": application.good.good_name,
+            "transport_origin": application.good.transport_origin,
+            "transport_des": application.good.transport_des,
+            "transport_money": application.good.transport_money,
+            "consigner_name": application.good.consigner.username,
+            "consigner_id": application.good.consigner.id,
+            "consigner_phone_number": application.good.consigner.phone_number,
+            "next_status": next_status(application.good_status)
+
+        }
+        for application in applications
+    ]
+
+    res["data"] = applications
+    return jsonify(res)
+
+
+# 司机修改货物运输的状态
+@good.route("/appstatus/", methods=["POST"])
+@login_required
+def driver_change_transport_status():
+    res = {
+        "state": "success", "msg": "change applicaton-state successfully", "data": []
+    }
+    request_data = request.get_json()
+    application_id = request_data.get("id")
+    status = request_data.get("status")
+
+    application = Application.query.get(application_id)
+    application.good_status = status
+
+    db.session.add(application)
+    db.session.commit()
+
     return jsonify(res)

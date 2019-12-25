@@ -1,5 +1,6 @@
 from flask import session, make_response
 from functools import wraps
+import pysnooper
 
 def login_required(func):
     @wraps(func)
@@ -15,9 +16,12 @@ def login_required(func):
     return wrapper  
 
 # 根据货物当前状态获取下一个状态
+@pysnooper.snoop()
 def next_status(curr):
-    pass
-
+    status = ["等待司机承运", "选定司机", "正在运输", "已到达目的地", "运输完成", "确定"]
+    if curr == None or curr not in status:
+        return "无法操作"
+    return status[status.index(curr)+1]
 
 
 

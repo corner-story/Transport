@@ -58,7 +58,7 @@ def driver_info():
         res["msg"] = "error id: None"
         return jsonify(res)
     try:
-        driver = Consigner.query.filter_by(id=driver_id).first()
+        driver = Driver.query.filter_by(id=driver_id).first()
     except Exception as e:
         res["state"] = "error"
         res["msg"] = str(e)
@@ -67,7 +67,6 @@ def driver_info():
     data = {
         "id": driver.id,
         "username": driver.username,
-        "password_hash": driver.password_hash,
         "phone_number": driver.phone_number,
         "email": driver.email,
         "car_type": driver.car_type,
@@ -78,6 +77,5 @@ def driver_info():
         "backup": driver.backup,
         "timestamp":driver.timestamp
     }
-
     res["data"] = data
     return jsonify(res)
